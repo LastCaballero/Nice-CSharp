@@ -5,8 +5,10 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-class Start {
-  static void Main(string[] args) {
+class Start
+{
+  static void Main(string[] args)
+  {
     switch (args.Length) {
       case 1: {
         new Server(int.Parse(args[0]));
@@ -24,16 +26,19 @@ class Start {
   }
 }
 
-class Client {
+class Client
+{
   private TcpClient _client;
 
-  public Client(string target, int port) {
+  public Client(string target, int port)
+  {
     _client = new TcpClient(target, port);
     new Thread(ReadMessages).Start();
     SendMessages();
   }
 
-  private void ReadMessages() {
+  private void ReadMessages()
+  {
     if (_client.Available > 0) {
       byte[] buffer = new byte[_client.Available];
       _client.Client.Receive(buffer);
@@ -44,7 +49,8 @@ class Client {
     Thread.Sleep(1000);
     new Thread(ReadMessages).Start();
   }
-  private void SendMessages() {
+  private void SendMessages()
+  {
     while (true) {
       byte[] bytes = Encoding.UTF8.GetBytes(Console.ReadLine() + "\n");
       _client.Client.Send(bytes);
@@ -52,11 +58,13 @@ class Client {
   }
 }
 
-class Server {
+class Server
+{
   private TcpListener _listener;
   private TcpClient _client;
 
-  public Server(int port) {
+  public Server(int port)
+  {
     _listener = new TcpListener(IPAddress.Any, port);
     _listener.Start();
     _client = _listener.AcceptTcpClient();
@@ -64,7 +72,8 @@ class Server {
     SendMessages();
   }
 
-  private void ReadMessages() {
+  private void ReadMessages()
+  {
     if (_client.Available > 0) {
       byte[] buffer = new byte[_client.Available];
       _client.Client.Receive(buffer);
@@ -75,7 +84,8 @@ class Server {
     Thread.Sleep(1000);
     new Thread(ReadMessages).Start();
   }
-  private void SendMessages() {
+  private void SendMessages()
+  {
     while (true) {
       byte[] bytes = Encoding.UTF8.GetBytes(Console.ReadLine() + "\n");
       _client.Client.Send(bytes);
